@@ -159,6 +159,40 @@ For the full command lists, see the [CLI guide](https://hermes-agent.nousresearc
 
 ---
 
+## Using Hermes with Claude Code
+
+Hermes and [Claude Code](https://claude.ai/code) integrate over the [Model Context Protocol](https://modelcontextprotocol.io) in both directions, following Anthropic's [MCP best practices](https://docs.claude.com/en/docs/claude-code/mcp) of project-scoped, explicit, version-controlled server registration.
+
+**Run Hermes as an MCP server** so Claude Code (or any MCP client) can drive a Hermes conversation as a tool:
+
+```bash
+hermes mcp serve --help
+```
+
+Register it in your project's `.mcp.json` (checked into the repo, so the whole team gets the same server — Claude Code prompts for approval the first time it loads a new project server):
+
+```json
+{
+  "mcpServers": {
+    "hermes": {
+      "command": "/path/to/venv/bin/hermes",
+      "args": ["mcp", "serve"]
+    }
+  }
+}
+```
+
+**Connect Hermes to other MCP servers** the same way Claude Code does, via the CLI:
+
+```bash
+hermes mcp add agentskills --url "https://agentskills.io/mcp"
+hermes mcp list
+```
+
+This repo's own `.mcp.json` registers the [agentskills.io](https://agentskills.io) MCP server (HTTP transport) for Claude Code sessions working on Hermes itself, giving Claude Code tools to search the Agent Skills marketplace while developing here. See [`CLAUDE.md`](CLAUDE.md) for repo-specific setup notes and [MCP Integration docs](https://hermes-agent.nousresearch.com/docs/user-guide/features/mcp) for the full picture.
+
+---
+
 ## Documentation
 
 All documentation lives at **[hermes-agent.nousresearch.com/docs](https://hermes-agent.nousresearch.com/docs/)**:
