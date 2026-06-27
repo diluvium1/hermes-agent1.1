@@ -1,0 +1,110 @@
+# =============================================================================
+# Business Registry — the single source of truth for the whole agent team
+# =============================================================================
+#
+# Every agent (chief-of-staff + the four specialists) reads this file before it
+# acts. It is copied to each profile's  local/businesses.yaml  by setup.sh.
+# The  local/  directory is NEVER overwritten by `hermes profile update`, so your
+# edits survive distribution upgrades.
+#
+# HOW TO USE
+#   1. Fill in the real details for each venture below (delete the ones you don't
+#      run, add any that are missing).
+#   2. For each operation an agent should perform for a venture, list it under
+#      `operations:` — agents skip ventures that don't opt into their operation.
+#   3. Put the IDs/URLs the agents need (Notion DB ids, Airtable base ids, the
+#      delivery channel for that venture) under `data:` and `delivery:`.
+#
+# The values shown are PLACEHOLDERS pre-seeded with the ventures you named so
+# nothing is invented — replace every "REPLACE_ME".
+# -----------------------------------------------------------------------------
+
+# Defaults applied to every business unless overridden in its own entry.
+defaults:
+  timezone: "America/New_York"        # REPLACE_ME — used for scheduling/brief framing
+  owner: "Jay"                        # how agents should address you
+  brand_voice: "clear, confident, no hype"
+
+businesses:
+  - id: launchly
+    name: "Launchly (my half)"
+    description: "REPLACE_ME — one line: what Launchly does and who it serves."
+    stage: "active"                   # idea | building | active | winding-down
+    operations: [content, sales, finance, ops]   # which specialists work this venture
+    data:
+      notion_db: "REPLACE_ME"         # Notion database id (CRM / content / tasks)
+      airtable_base: "REPLACE_ME"     # Airtable base id
+      drive_folder: "REPLACE_ME"      # Google Drive folder id
+    delivery:
+      primary: "telegram"             # where this venture's routine output goes
+      slack_channel: "REPLACE_ME"
+
+  - id: launchly-digest
+    name: "Launchly Digest"
+    description: "REPLACE_ME — the newsletter: cadence, audience, what each issue covers."
+    stage: "active"
+    operations: [content, sales]
+    data:
+      notion_db: "REPLACE_ME"         # the content calendar / issue tracker
+      drive_folder: "REPLACE_ME"
+    delivery:
+      primary: "slack"
+    content:
+      cadence: "weekly"               # used by the newsletter-digest skill
+      send_day: "Thursday"
+      sections: ["intro", "3 picks", "tool of the week", "one ask"]
+
+  - id: paranormal-gaia
+    name: "Paranormal Gaia"
+    description: "REPLACE_ME — the brand/community: format, platforms, audience."
+    stage: "active"
+    operations: [content, ops]
+    data:
+      notion_db: "REPLACE_ME"
+    delivery:
+      primary: "telegram"
+
+  - id: praxis
+    name: "Praxis"
+    description: "REPLACE_ME — product/service, target customer, pricing model."
+    stage: "active"
+    operations: [sales, finance, ops]
+    data:
+      airtable_base: "REPLACE_ME"     # pipeline / CRM
+    delivery:
+      primary: "telegram"
+
+  - id: glass-and-counsel
+    name: "Glass and Counsel"
+    description: "REPLACE_ME — advisory/services: engagements, deliverables, clients."
+    stage: "active"
+    operations: [sales, finance, ops]
+    data:
+      notion_db: "REPLACE_ME"
+      drive_folder: "REPLACE_ME"
+    delivery:
+      primary: "email"
+    finance:
+      invoice_cadence: "monthly"
+      payment_terms: "net-15"
+
+  - id: j3p0
+    name: "J3P0"
+    description: "REPLACE_ME — what J3P0 is, revenue model, key channels."
+    stage: "active"
+    operations: [content, sales, finance, ops]
+    data:
+      airtable_base: "REPLACE_ME"
+    delivery:
+      primary: "discord"
+
+  # Add the rest of your ventures by copying a block above. Keep `id` lowercase,
+  # hyphenated, and stable — skills reference businesses by id.
+
+# -----------------------------------------------------------------------------
+# Thresholds the agents use for alerts (tune to taste).
+# -----------------------------------------------------------------------------
+thresholds:
+  runway_alert_months: 4              # finance-admin warns when runway drops below this
+  invoice_overdue_days: 7             # finance-admin flags overdue invoices
+  support_sla_hours: 24               # ops-support escalates tickets older than this

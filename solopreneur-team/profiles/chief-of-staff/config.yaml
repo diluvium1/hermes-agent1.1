@@ -1,0 +1,21 @@
+# Chief of Staff — model + delegation config
+# Distribution-owned but preserved on `hermes profile update` unless --force-config.
+
+model:
+  default: "anthropic/claude-opus-4.6"   # orchestration + judgement; switch with /model
+  provider: "auto"
+
+agent:
+  max_turns: 60
+
+# This profile is the orchestrator: it delegates venture-specific work to the
+# specialist profiles and aggregates their results.
+delegation:
+  orchestrator_enabled: true
+  max_concurrent_children: 3
+  max_spawn_depth: 1
+  subagent_auto_approve: false      # safe default for cron/batch pipelines
+
+memory:
+  memory_enabled: true
+  user_profile_enabled: true

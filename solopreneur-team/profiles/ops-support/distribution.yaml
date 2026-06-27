@@ -1,0 +1,42 @@
+name: ops-support
+version: 1.0.0
+description: >-
+  Support & operations specialist for a multi-venture solopreneur. Triages
+  customer support, runs standard operating procedures, and reports weekly
+  operational KPIs — driven by the shared business registry and its thresholds.
+hermes_requires: ">=0.12.0"
+author: "Solopreneur Team Kit"
+license: "MIT"
+
+env_requires:
+  - name: GEMINI_API_KEY
+    description: "Google Gemini API key (default model)"
+    required: false
+    default: ""
+  - name: ANTHROPIC_API_KEY
+    description: "Anthropic API key (optional, for switching to Claude)"
+    required: false
+    default: ""
+  - name: NOTION_API_KEY
+    description: "Notion key for tickets/SOPs/KPIs (bundled notion skill)"
+    required: false
+    default: ""
+  - name: AIRTABLE_API_KEY
+    description: "Airtable key for tickets/KPIs (bundled airtable skill)"
+    required: false
+    default: ""
+  - name: TELEGRAM_BOT_TOKEN
+    description: "Telegram bot token for delivery"
+    required: false
+    default: ""
+  - name: SLACK_BOT_TOKEN
+    description: "Slack bot token for delivery"
+    required: false
+    default: ""
+
+distribution_owned:
+  - SOUL.md
+  - config.yaml
+  - mcp.json
+  - skills/
+  - cron/
