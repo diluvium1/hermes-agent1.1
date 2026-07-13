@@ -2,7 +2,7 @@
 # Distribution-owned but preserved on update unless --force-config.
 
 model:
-  default: "google/gemini-3-flash-preview"   # research + drafting volume; switch with /model
+  default: "google/gemini-2.5-flash"   # research + drafting volume; switch with /model
   provider: "auto"
 
 agent:

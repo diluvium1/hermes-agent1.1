@@ -56,11 +56,11 @@ configure those integrations' keys in each agent's `.env`.
   `~/.hermes/profiles/chief-of-staff/local/businesses.yaml` (the specialists
   symlink to it, so a single edit updates the whole team). Give each venture a
   lowercase `id` and list which `operations` apply — no skill edits needed.
-- **Change a model:** each `config.yaml` ships with the model ids from Hermes' own
-  default config (`anthropic/claude-opus-4.6`, `google/gemini-3-flash-preview`).
-  These are placeholders — set `model.default` to whatever model your API
-  plan/provider actually serves (edit `config.yaml` or run `/model` in
-  `hermes -p <agent> chat`). The kit is model-agnostic.
+- **Change a model:** the Claude agents (`chief-of-staff`, `finance-admin`) ship on
+  `anthropic/claude-opus-4.7` and the Gemini agents (`content-marketer`, `sales-crm`,
+  `ops-support`) on `google/gemini-2.5-flash`. Set `model.default` to whatever your
+  API plan/provider serves (edit `config.yaml` or run `/model` in
+  `hermes -p <agent> chat`). The kit is model-agnostic (`provider: auto`).
 - **Change a schedule or delivery:** `hermes -p <agent> cron edit <job_id> --schedule "..." --deliver slack`, or edit `setup.sh` and re-run.
 - **Add an SOP:** drop a new `skills/<name>/SKILL.md` into a profile and attach it
   to a cron job with `--skill <name>`.

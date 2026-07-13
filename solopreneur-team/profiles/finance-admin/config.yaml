@@ -2,7 +2,7 @@
 # Distribution-owned but preserved on update unless --force-config.
 
 model:
-  default: "anthropic/claude-opus-4.6"   # accuracy on numbers/money; switch with /model
+  default: "anthropic/claude-opus-4.7"   # accuracy on numbers/money; switch with /model
   provider: "auto"
 
 agent:

@@ -2,7 +2,7 @@
 # Distribution-owned but preserved on update unless --force-config.
 
 model:
-  default: "google/gemini-3-flash-preview"   # high-volume drafting; switch to Claude with /model for polish
+  default: "google/gemini-2.5-flash"   # high-volume drafting; switch to Claude with /model for polish
   provider: "auto"
 
 agent:
