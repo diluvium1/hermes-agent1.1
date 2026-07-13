@@ -20,10 +20,16 @@ set -euo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROFILES_DIR="$HERE/profiles"
 REGISTRY_SRC="$HERE/businesses.example.yaml"
+# Repo's bundled skills live one level up (this kit ships inside hermes-agent).
+BUNDLED_SKILLS_SRC="$HERE/../skills/productivity"
 WITH_CRON=1
 [[ "${1:-}" == "--no-cron" ]] && WITH_CRON=0
 
 PROFILE_NAMES=(chief-of-staff content-marketer sales-crm finance-admin ops-support)
+
+# Data skills each specialist's SOPs call. A distribution install ships only the
+# profile's own skills/, so these bundled skills are vendored in per specialist.
+DATA_SKILLS=(notion airtable google-workspace)
 
 command -v hermes >/dev/null 2>&1 || { echo "ERROR: 'hermes' not found on PATH. Install Hermes and run 'hermes setup' first."; exit 1; }
 
@@ -69,6 +75,23 @@ for p in "${PROFILE_NAMES[@]}"; do
       cp "$REGISTRY_SRC" "$dest/businesses.yaml"
       echo "    · symlink unsupported — copied local/businesses.yaml (edit per profile)"
     fi
+  fi
+
+  # Vendor the bundled data skills the specialists' SOPs call. chief-of-staff
+  # delegates (it reads the registry file directly), so it doesn't need them.
+  if [[ "$p" != "chief-of-staff" ]]; then
+    sdest="$(profile_home "$p")/skills"
+    mkdir -p "$sdest"
+    for s in "${DATA_SKILLS[@]}"; do
+      if [[ -d "$sdest/$s" ]]; then
+        :  # already present (installed or a prior run)
+      elif [[ -f "$BUNDLED_SKILLS_SRC/$s/SKILL.md" ]]; then
+        cp -R "$BUNDLED_SKILLS_SRC/$s" "$sdest/$s"
+      else
+        echo "    ! bundled skill '$s' not found at $BUNDLED_SKILLS_SRC — install it with 'hermes -p $p skills install $s'"
+      fi
+    done
+    echo "    · vendored data skills: ${DATA_SKILLS[*]}"
   fi
 done
 

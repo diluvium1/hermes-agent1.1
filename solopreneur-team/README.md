@@ -46,9 +46,11 @@ cd examples/solopreneur-team
 #   3) hermes gateway start
 ```
 
-Prerequisites: Hermes installed and `hermes setup` run once. The agents use the
-bundled `notion`, `airtable`, and `google-workspace` skills for data access, so
-configure those integrations' keys in each agent's `.env`.
+Prerequisites: Hermes installed and `hermes setup` run once. The specialists use
+the bundled `notion`, `airtable`, and `google-workspace` skills for data access;
+`setup.sh` vendors those skills into each specialist profile automatically (a
+profile-distribution install only ships a profile's own skills). Configure those
+integrations' keys in each agent's `.env`.
 
 ## Customizing
 
