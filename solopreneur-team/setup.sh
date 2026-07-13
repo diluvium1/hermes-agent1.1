@@ -51,13 +51,24 @@ for p in "${PROFILE_NAMES[@]}"; do
 
   # Seed the shared business registry into the profile's user-owned local/ dir
   # (distributions never overwrite local/, so your edits persist across updates).
+  # chief-of-staff holds the ONE canonical copy; specialists symlink to it so
+  # editing a single file updates the whole team (true single source of truth).
   dest="$(profile_home "$p")/local"
   mkdir -p "$dest"
-  if [[ -f "$dest/businesses.yaml" ]]; then
-    echo "    · local/businesses.yaml exists — leaving your copy untouched"
-  else
+  if [[ -e "$dest/businesses.yaml" || -L "$dest/businesses.yaml" ]]; then
+    echo "    · local/businesses.yaml already present — leaving it untouched"
+  elif [[ "$p" == "chief-of-staff" ]]; then
     cp "$REGISTRY_SRC" "$dest/businesses.yaml"
-    echo "    · seeded local/businesses.yaml (EDIT THIS)"
+    echo "    · seeded canonical local/businesses.yaml (EDIT THIS ONE)"
+  else
+    # Relative symlink → ~/.hermes/profiles/chief-of-staff/local/businesses.yaml
+    if ln -s "../../chief-of-staff/local/businesses.yaml" "$dest/businesses.yaml" 2>/dev/null; then
+      echo "    · symlinked local/businesses.yaml → chief-of-staff canonical copy"
+    else
+      # Filesystems without symlink support (some Windows setups): fall back to a copy.
+      cp "$REGISTRY_SRC" "$dest/businesses.yaml"
+      echo "    · symlink unsupported — copied local/businesses.yaml (edit per profile)"
+    fi
   fi
 done
 
@@ -88,18 +99,20 @@ else
   echo "==> Skipping cron (--no-cron)"
 fi
 
-cat <<'NEXT'
+# Resolve the Hermes home so the printed paths are correct even with a custom
+# HERMES_HOME. ${HERMES_BASE} below is expanded; \$p / \$EDITOR stay literal.
+HERMES_BASE="${HERMES_HOME:-$HOME/.hermes}"
+cat <<NEXT
 
 ==============================================================================
  Team installed. Next steps:
 ==============================================================================
  1. Fill in API keys for each agent:
       for p in chief-of-staff content-marketer sales-crm finance-admin ops-support; do
-        cp ~/.hermes/profiles/$p/.env.EXAMPLE ~/.hermes/profiles/$p/.env  # then edit
+        cp ${HERMES_BASE}/profiles/\$p/.env.EXAMPLE ${HERMES_BASE}/profiles/\$p/.env  # then edit
       done
- 2. Edit the business registry (each agent reads it):
-      $EDITOR ~/.hermes/profiles/chief-of-staff/local/businesses.yaml
-      # repeat for the other profiles, or keep one canonical copy and symlink.
+ 2. Edit the ONE canonical business registry (specialists symlink to it):
+      \$EDITOR ${HERMES_BASE}/profiles/chief-of-staff/local/businesses.yaml
  3. Start the gateway so cron + delivery run:
       hermes gateway start
  4. Smoke-test one routine:

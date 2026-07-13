@@ -14,7 +14,12 @@ delegation:
   orchestrator_enabled: true
   max_concurrent_children: 3
   max_spawn_depth: 1
-  subagent_auto_approve: false      # safe default for cron/batch pipelines
+  # false = auto-DENY a subagent's dangerous-command approval prompt (returns
+  # immediately; it does NOT block or time out). Safe default for unattended
+  # business agents that draft-and-queue. Delegation itself is unaffected — only
+  # genuinely dangerous shell commands are denied. Set true only if you want
+  # subagents to auto-approve such commands during cron runs.
+  subagent_auto_approve: false
 
 memory:
   memory_enabled: true

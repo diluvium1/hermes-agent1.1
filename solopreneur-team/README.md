@@ -52,10 +52,15 @@ configure those integrations' keys in each agent's `.env`.
 
 ## Customizing
 
-- **Add a business:** copy a block in `businesses.yaml`, give it a lowercase `id`,
-  and list which `operations` apply. The whole team picks it up — no skill edits.
-- **Change a model:** edit `profiles/<agent>/config.yaml` (`model.default`) or run
-  `/model` inside `hermes -p <agent> chat`.
+- **Add a business:** edit the ONE canonical registry at
+  `~/.hermes/profiles/chief-of-staff/local/businesses.yaml` (the specialists
+  symlink to it, so a single edit updates the whole team). Give each venture a
+  lowercase `id` and list which `operations` apply — no skill edits needed.
+- **Change a model:** each `config.yaml` ships with the model ids from Hermes' own
+  default config (`anthropic/claude-opus-4.6`, `google/gemini-3-flash-preview`).
+  These are placeholders — set `model.default` to whatever model your API
+  plan/provider actually serves (edit `config.yaml` or run `/model` in
+  `hermes -p <agent> chat`). The kit is model-agnostic.
 - **Change a schedule or delivery:** `hermes -p <agent> cron edit <job_id> --schedule "..." --deliver slack`, or edit `setup.sh` and re-run.
 - **Add an SOP:** drop a new `skills/<name>/SKILL.md` into a profile and attach it
   to a cron job with `--skill <name>`.
