@@ -1,0 +1,41 @@
+name: finance-admin
+version: 1.0.0
+description: >-
+  Finance & admin specialist for a multi-venture solopreneur. Runs invoicing,
+  tracks revenue/expenses, produces weekly P&L digests, and watches runway —
+  driven by the shared business registry and its thresholds.
+hermes_requires: ">=0.12.0"
+author: "Solopreneur Team Kit"
+license: "MIT"
+
+env_requires:
+  - name: ANTHROPIC_API_KEY
+    description: "Anthropic API key (finance-admin runs on Claude for numeric accuracy)"
+    required: true
+  - name: AIRTABLE_API_KEY
+    description: "Airtable key for finance tables (bundled airtable skill)"
+    required: false
+    default: ""
+  - name: NOTION_API_KEY
+    description: "Notion key for finance tracking (bundled notion skill)"
+    required: false
+    default: ""
+  - name: GOOGLE_APPLICATION_CREDENTIALS
+    description: "Google service-account JSON path for Sheets/Drive (bundled google-workspace skill)"
+    required: false
+    default: ""
+  - name: TELEGRAM_BOT_TOKEN
+    description: "Telegram bot token for delivery"
+    required: false
+    default: ""
+  - name: EMAIL_ADDRESS
+    description: "Sender email for the P&L digest (bundled email delivery)"
+    required: false
+    default: ""
+
+distribution_owned:
+  - SOUL.md
+  - config.yaml
+  - mcp.json
+  - skills/
+  - cron/

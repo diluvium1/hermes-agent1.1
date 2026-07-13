@@ -1,0 +1,31 @@
+name: chief-of-staff
+version: 1.0.0
+description: >-
+  Founder's chief of staff. Orchestrates a solopreneur's portfolio of ventures:
+  reads the business registry, runs the daily/weekly cadence, and delegates
+  venture-specific work to the content, sales, finance, and ops specialist agents.
+hermes_requires: ">=0.12.0"
+author: "Solopreneur Team Kit"
+license: "MIT"
+
+env_requires:
+  - name: ANTHROPIC_API_KEY
+    description: "Anthropic API key (chief-of-staff runs on Claude)"
+    required: true
+  - name: TELEGRAM_BOT_TOKEN
+    description: "Telegram bot token for the daily brief delivery"
+    required: false
+    default: ""
+  - name: SLACK_BOT_TOKEN
+    description: "Slack bot token for the weekly business review delivery"
+    required: false
+    default: ""
+
+# Defaults are fine; listed for clarity. local/ (the business registry) is never
+# touched by `hermes profile update`.
+distribution_owned:
+  - SOUL.md
+  - config.yaml
+  - mcp.json
+  - skills/
+  - cron/

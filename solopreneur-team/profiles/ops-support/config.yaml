@@ -1,0 +1,13 @@
+# ops-support — model config
+# Distribution-owned but preserved on update unless --force-config.
+
+model:
+  default: "google/gemini-2.5-flash"   # triage + summarization volume; switch with /model
+  provider: "auto"
+
+agent:
+  max_turns: 40
+
+memory:
+  memory_enabled: true
+  user_profile_enabled: true

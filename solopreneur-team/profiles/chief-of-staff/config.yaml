@@ -1,0 +1,26 @@
+# Chief of Staff — model + delegation config
+# Distribution-owned but preserved on `hermes profile update` unless --force-config.
+
+model:
+  default: "anthropic/claude-opus-4.7"   # orchestration + judgement; switch with /model
+  provider: "auto"
+
+agent:
+  max_turns: 60
+
+# This profile is the orchestrator: it delegates venture-specific work to the
+# specialist profiles and aggregates their results.
+delegation:
+  orchestrator_enabled: true
+  max_concurrent_children: 3
+  max_spawn_depth: 1
+  # false = auto-DENY a subagent's dangerous-command approval prompt (returns
+  # immediately; it does NOT block or time out). Safe default for unattended
+  # business agents that draft-and-queue. Delegation itself is unaffected — only
+  # genuinely dangerous shell commands are denied. Set true only if you want
+  # subagents to auto-approve such commands during cron runs.
+  subagent_auto_approve: false
+
+memory:
+  memory_enabled: true
+  user_profile_enabled: true
